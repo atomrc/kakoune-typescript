@@ -2,6 +2,8 @@
 
 [typescript](https://www.typescriptlang.org/) support for [kakoune](http://kakoune.org/)
 
+![typescript demo](/screenshot/demo.png)
+
 # Install
 
 clone this repo (or simply copy the `typescript.kak` file) and then
