@@ -16,7 +16,8 @@ add-highlighter -group / regions -default code typescript \
     comment       /\*  \*/                     '' \
     regex         /    (?<!\\)(\\\\)*/[gimuy]* '' \
     functionDecl '(?<=function)' '\).*{'       '' \
-    functionDecl '[(=]+\s*\(' '\)\s*=>'        '' \
+    functionDecl '[(=]+\s*\('  '\)\s*=>'       '' \
+    jsx          '<[/]\w'      '>'             '' \
     division '[\w\)\]](/|(\h+/\h+))' '\w'      '' \ # Help Kakoune to better detect /…/ literals
 
 # Regular expression flags are: g → global match, i → ignore case, m → multi-lines, u → unicode, y → sticky
