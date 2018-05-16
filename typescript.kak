@@ -8,14 +8,14 @@ hook global BufCreate .*[.](ts|tsx) %{
 # Highlighters
 # ‾‾‾‾‾‾‾‾‾‾‾‾
 
-add-highlighter -group / regions -default code typescript \
+add-highlighter shared/ regions -default code typescript \
     double_string '"'  (?<!\\)(\\\\)*"         '' \
     single_string "'"  (?<!\\)(\\\\)*'         '' \
     literal       "`"  (?<!\\)(\\\\)*`         '' \
     comment       //   '$'                     '' \
     comment       /\*  \*/                     '' \
     regex         /    (?<!\\)(\\\\)*/[gimuy]* '' \
-    functionDecl '(?<=function)' '\).*{'       '' \
+    functionDecl '(?<=function)' '\).*\{'      '' \
     functionDecl '\([^)]*\)\s*='  '>'       '' \
     jsx          '<[/]\w'      '>'             '' \
     division '[\w\)\]](/|(\h+/\h+))' '\w'      '' \ # Help Kakoune to better detect /…/ literals
@@ -23,24 +23,24 @@ add-highlighter -group / regions -default code typescript \
 # Regular expression flags are: g → global match, i → ignore case, m → multi-lines, u → unicode, y → sticky
 # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-add-highlighter -group /typescript/double_string fill string
-add-highlighter -group /typescript/single_string fill string
-add-highlighter -group /typescript/regex         fill meta
-add-highlighter -group /typescript/comment       fill comment
-add-highlighter -group /typescript/literal       fill string
-add-highlighter -group /typescript/literal       regex \${.*?} 0:value
+add-highlighter shared/typescript/double_string fill string
+add-highlighter shared/typescript/single_string fill string
+add-highlighter shared/typescript/regex         fill meta
+add-highlighter shared/typescript/comment       fill comment
+add-highlighter shared/typescript/literal       fill string
+add-highlighter shared/typescript/literal       regex \$\{.*?\} 0:value
 
-add-highlighter -group /typescript/code regex \b(document|false|null|parent|self|this|true|undefined|window)\b 0:value
-add-highlighter -group /typescript/code regex "-?[0-9]*\.?[0-9]+" 0:value
-add-highlighter -group /typescript/code regex \b(Array|Boolean|Date|Function|Number|Object|RegExp|String|Symbol)\b 0:type
+add-highlighter shared/typescript/code regex \b(document|false|null|parent|self|this|true|undefined|window)\b 0:value
+add-highlighter shared/typescript/code regex "-?[0-9]*\.?[0-9]+" 0:value
+add-highlighter shared/typescript/code regex \b(Array|Boolean|Date|Function|Number|Object|RegExp|String|Symbol)\b 0:type
 
 # Keywords are collected at
 # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords
-add-highlighter -group /typescript/code regex \b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|let|new|of|return|super|switch|throw|try|typeof|var|void|while|with|yield)\b 0:keyword
+add-highlighter shared/typescript/code regex \b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|let|new|of|return|super|switch|throw|try|typeof|var|void|while|with|yield)\b 0:keyword
 
-add-highlighter -group /typescript/functionDecl regex ':\s*([a-zA-Z<>]+)' 1:type
-add-highlighter -group /typescript/functionDecl regex '[(,]+\s*([\w$]+)\s*:?' 1:variable
-#add-highlighter -group /typescript/functionDecl fill comment
+add-highlighter shared/typescript/functionDecl regex ':\s*([a-zA-Z<>]+)' 1:type
+add-highlighter shared/typescript/functionDecl regex '[(,]+\s*([\w$]+)\s*:?' 1:variable
+#add-highlighter shared/typescript/functionDecl fill comment
 
 # Commands
 # ‾‾‾‾‾‾‾‾
@@ -73,7 +73,7 @@ def -hidden typescript-indent-on-new-line %<
 # Initialization
 # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
-hook -group typescript-highlight global WinSetOption filetype=typescript %{ add-highlighter ref typescript }
+hook -group typescript-highlight global WinSetOption filetype=typescript %{ add-highlighter window ref typescript }
 
 hook global WinSetOption filetype=typescript %{
     hook window InsertEnd  .* -group typescript-hooks  typescript-filter-around-selections
